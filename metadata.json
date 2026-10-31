@@ -1,0 +1,6 @@
+{
+  "name": "StudyCircle",
+  "description": "A minimalist study community for students to solve doubts, share notes, and discuss subjects.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,67 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Users collection: Student profiles & credentials
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if isValidId(userId)
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.course is string
+                    && request.resource.data.semester is string;
+      allow update: if isValidId(userId)
+                    && request.resource.data.email is string
+                    && request.resource.data.course is string
+                    && request.resource.data.semester is string;
+      allow delete: if false;
+    }
+
+    // Communities: Subject study circles
+    match /communities/{communityId} {
+      allow read: if true;
+      allow create: if isValidId(communityId)
+                    && request.resource.data.name is string
+                    && request.resource.data.slug is string
+                    && request.resource.data.subject is string;
+      allow update: if isValidId(communityId)
+                    && request.resource.data.name is string;
+      allow delete: if isValidId(communityId);
+    }
+
+    // Posts: Doubts, Notes, Discussions
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isValidId(postId)
+                    && request.resource.data.title is string
+                    && request.resource.data.content is string
+                    && request.resource.data.communityId is string
+                    && request.resource.data.authorName is string
+                    && request.resource.data.authorEmail is string;
+      allow update: if isValidId(postId);
+      allow delete: if isValidId(postId);
+    }
+
+    // Comments: Peer explanations, solutions
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isValidId(commentId)
+                    && request.resource.data.postId is string
+                    && request.resource.data.authorName is string
+                    && request.resource.data.authorEmail is string
+                    && request.resource.data.content is string;
+      allow update: if isValidId(commentId);
+      allow delete: if isValidId(commentId);
+    }
+  }
+}

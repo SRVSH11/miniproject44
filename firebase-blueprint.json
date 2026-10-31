@@ -1,0 +1,256 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student user profile and credentials",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique user ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Student full name",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Student email address",
+          "maxLength": 150
+        },
+        "passkey": {
+          "type": "string",
+          "description": "Passkey or password for student account access",
+          "maxLength": 100
+        },
+        "avatarColor": {
+          "type": "string",
+          "description": "Avatar badge color class",
+          "maxLength": 50
+        },
+        "joinedDate": {
+          "type": "string",
+          "description": "Display string for joined date",
+          "maxLength": 50
+        },
+        "course": {
+          "type": "string",
+          "description": "Course or degree program",
+          "maxLength": 100
+        },
+        "semester": {
+          "type": "string",
+          "description": "Current semester",
+          "maxLength": 50
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short bio or study focus",
+          "maxLength": 500
+        }
+      },
+      "required": ["id", "name", "email", "course", "semester"]
+    },
+    "Community": {
+      "title": "Community",
+      "description": "Subject study circle",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Community unique ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Community title",
+          "maxLength": 100
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL slug",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "description": "Community description",
+          "maxLength": 500
+        },
+        "icon": {
+          "type": "string",
+          "description": "Emoji icon",
+          "maxLength": 20
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject category",
+          "maxLength": 100
+        },
+        "memberCount": {
+          "type": "number",
+          "description": "Number of members"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation date ISO or formatted string",
+          "maxLength": 50
+        },
+        "isCustom": {
+          "type": "boolean",
+          "description": "True if user-created community"
+        },
+        "creatorEmail": {
+          "type": "string",
+          "description": "Admin student email",
+          "maxLength": 150
+        },
+        "creatorName": {
+          "type": "string",
+          "description": "Admin student name",
+          "maxLength": 100
+        }
+      },
+      "required": ["id", "name", "slug", "description", "icon", "subject"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Academic post (doubt, notes, or discussion)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique post ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Post title",
+          "maxLength": 200
+        },
+        "content": {
+          "type": "string",
+          "description": "Post description or notes content",
+          "maxLength": 10000
+        },
+        "type": {
+          "type": "string",
+          "enum": ["doubt", "notes", "discussion"],
+          "description": "Post type"
+        },
+        "communityId": {
+          "type": "string",
+          "description": "Associated community ID",
+          "maxLength": 100
+        },
+        "communityName": {
+          "type": "string",
+          "description": "Community name",
+          "maxLength": 100
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Author display name",
+          "maxLength": 100
+        },
+        "authorEmail": {
+          "type": "string",
+          "description": "Author email",
+          "maxLength": 150
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation date",
+          "maxLength": 50
+        },
+        "upvotes": {
+          "type": "number",
+          "description": "Count of upvotes"
+        },
+        "downvotes": {
+          "type": "number",
+          "description": "Count of downvotes"
+        },
+        "commentCount": {
+          "type": "number",
+          "description": "Count of comments"
+        },
+        "isSolved": {
+          "type": "boolean",
+          "description": "Whether doubt is solved"
+        },
+        "solvedCommentId": {
+          "type": "string",
+          "description": "ID of accepted solution comment",
+          "maxLength": 100
+        }
+      },
+      "required": ["id", "title", "content", "type", "communityId", "authorName", "authorEmail"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Doubt solution or post reply",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique comment ID"
+        },
+        "postId": {
+          "type": "string",
+          "description": "Target post ID",
+          "maxLength": 100
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Author name",
+          "maxLength": 100
+        },
+        "authorEmail": {
+          "type": "string",
+          "description": "Author email",
+          "maxLength": 150
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp",
+          "maxLength": 50
+        },
+        "content": {
+          "type": "string",
+          "description": "Comment or solution body",
+          "maxLength": 5000
+        },
+        "upvotes": {
+          "type": "number",
+          "description": "Upvotes count"
+        },
+        "downvotes": {
+          "type": "number",
+          "description": "Downvotes count"
+        },
+        "isSolution": {
+          "type": "boolean",
+          "description": "Whether marked as verified solution"
+        }
+      },
+      "required": ["id", "postId", "authorName", "authorEmail", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Student user profiles for account recovery and identity across devices"
+    },
+    "/communities/{communityId}": {
+      "schema": "Community",
+      "description": "Subject study circles created by administrators and students"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Academic doubts, study notes, and discussions shared across devices in real time"
+    },
+    "/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Replies, peer explanations, and verified solutions for doubts"
+    }
+  }
+}
